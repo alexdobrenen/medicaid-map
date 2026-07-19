@@ -46,14 +46,15 @@ npm install
 npm run dev
 ```
 
-Requires a Mapbox access token in `.env.local`:
+Requires a Mapbox access token and a Census API key in `.env.local`:
 
 ```
 VITE_MAPBOX_TOKEN=your_mapbox_token_here
+VITE_CENSUS_API_KEY=your_census_api_key_here
 ```
 
-Get a free token at [mapbox.com](https://account.mapbox.com/access-tokens/).
+Get a free Mapbox token at [mapbox.com](https://account.mapbox.com/access-tokens/) and a free Census API key at [api.census.gov/data/key_signup.html](https://api.census.gov/data/key_signup.html) (the Census ACS API returns a `302` with no data for unauthenticated requests).
 
 ## Deployment
 
-The app deploys to GitHub Pages via the included GitHub Actions workflow. The `VITE_MAPBOX_TOKEN` must be added as a repository secret under **Settings > Secrets and variables > Actions**.
+The app deploys to GitHub Pages via the included GitHub Actions workflow. Both `VITE_MAPBOX_TOKEN` and `VITE_CENSUS_API_KEY` must be added as repository secrets under **Settings > Secrets and variables > Actions**.

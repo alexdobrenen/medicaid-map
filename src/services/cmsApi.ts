@@ -3,6 +3,11 @@ import type { ACSMedicaidRow } from '../types/cms'
 const ACS_BASE = 'https://api.census.gov/data/2022/acs/acs5'
 const VARIABLES =
   'NAME,C27007_001E,C27007_004E,C27007_007E,C27007_010E,C27007_014E,C27007_017E,C27007_020E'
+const CENSUS_API_KEY = import.meta.env.VITE_CENSUS_API_KEY as string | undefined
+
+function withApiKey(url: string): string {
+  return CENSUS_API_KEY ? `${url}&key=${CENSUS_API_KEY}` : url
+}
 
 function parseACSResponse(
   data: string[][],
@@ -50,7 +55,7 @@ export async function fetchCountyMedicaid(
   const geo = stateFips
     ? `for=county:*&in=state:${stateFips}`
     : 'for=county:*&in=state:*'
-  const url = `${ACS_BASE}?get=${VARIABLES}&${geo}`
+  const url = withApiKey(`${ACS_BASE}?get=${VARIABLES}&${geo}`)
   const response = await fetch(url)
   if (!response.ok) throw new Error(`Census API error: ${response.status}`)
   const data = (await response.json()) as string[][]
@@ -58,7 +63,9 @@ export async function fetchCountyMedicaid(
 }
 
 export async function fetchZipMedicaid(): Promise<ACSMedicaidRow[]> {
-  const url = `${ACS_BASE}?get=${VARIABLES}&for=zip%20code%20tabulation%20area:*`
+  const url = withApiKey(
+    `${ACS_BASE}?get=${VARIABLES}&for=zip%20code%20tabulation%20area:*`,
+  )
   const response = await fetch(url)
   if (!response.ok) throw new Error(`Census API error: ${response.status}`)
   const data = (await response.json()) as string[][]

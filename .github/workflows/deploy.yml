@@ -30,6 +30,7 @@ jobs:
       - run: npm run build
         env:
           VITE_MAPBOX_TOKEN: ${{ secrets.VITE_MAPBOX_TOKEN }}
+          VITE_CENSUS_API_KEY: ${{ secrets.VITE_CENSUS_API_KEY }}
 
       - uses: actions/upload-pages-artifact@v3
         with:
