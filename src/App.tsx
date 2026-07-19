@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { FilterPane } from './components/filters/FilterPane'
+import { InfoButton } from './components/InfoModal'
 import { ChoroplethMap } from './components/map/ChoroplethMap'
 import { EnrollmentTables } from './components/tables/EnrollmentTables'
 
@@ -14,9 +15,10 @@ function App() {
       {/* Desktop layout */}
       <div className="hidden md:flex h-screen w-screen overflow-hidden">
         <aside className="w-[300px] shrink-0 border-r border-border overflow-y-auto p-5 bg-surface-alt">
-          <h1 className="text-lg font-bold text-white mb-5">
-            Medicaid Map
-          </h1>
+          <div className="flex items-center mb-5">
+            <h1 className="text-lg font-bold text-white">Medicaid Map</h1>
+            <InfoButton />
+          </div>
           <FilterPane />
         </aside>
         <main className="flex-1 flex flex-col overflow-hidden bg-surface">
@@ -32,7 +34,10 @@ function App() {
       {/* Mobile layout */}
       <div className="md:hidden flex flex-col h-screen w-screen overflow-hidden bg-surface">
         <header className="shrink-0 flex items-center justify-between px-4 py-3 bg-surface-alt border-b border-border">
-          <h1 className="text-lg font-bold text-white">Medicaid Map</h1>
+          <div className="flex items-center">
+            <h1 className="text-lg font-bold text-white">Medicaid Map</h1>
+            <InfoButton />
+          </div>
           <button
             onClick={() => setFiltersOpen(!filtersOpen)}
             className="px-3 py-1.5 text-sm rounded-md bg-accent/20 text-accent-light border border-accent/30 hover:bg-accent/30 transition-colors"

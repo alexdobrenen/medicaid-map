@@ -1,6 +1,6 @@
 import type { ACSMedicaidRow } from '../types/cms'
 
-const ACS_BASE = 'https://api.census.gov/data/2022/acs/acs5'
+const ACS_BASE = 'https://api.census.gov/data/2024/acs/acs5'
 const VARIABLES =
   'NAME,C27007_001E,C27007_004E,C27007_007E,C27007_010E,C27007_014E,C27007_017E,C27007_020E'
 const CENSUS_API_KEY = import.meta.env.VITE_CENSUS_API_KEY as string | undefined

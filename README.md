@@ -1,60 +1,15 @@
-# Medicare Map
+# Medicaid Map
 
-An interactive choropleth map visualizing Medicare enrollment across US counties. Built with React, TypeScript, Mapbox GL, and Tailwind CSS.
+Interactive choropleth map of Medicaid enrollment across US counties and ZIP codes.
 
-## Data Source
+## Data
 
-This app uses **real, live data** from the Centers for Medicare & Medicaid Services (CMS) public API.
+**Source:** [US Census Bureau ACS 5-Year Estimates, 2020–2024](https://www.census.gov/data/developers/data-sets/acs-5year.html) — Table C27007 (Medicaid/Means-Tested Public Coverage by Sex by Age)
 
-**Dataset:** [Medicare Monthly Enrollment](https://data.cms.gov/summary-statistics-on-beneficiary-enrollment/medicare-and-medicaid-reports/medicare-monthly-enrollment)
+**API:** `https://api.census.gov/data/2024/acs/acs5`
 
-- **API endpoint:** `https://data.cms.gov/data-api/v1/dataset/d7fabe1e-d19b-4333-9eff-e80e0643f2fd/data`
-- **Granularity:** County-level (identified by FIPS code)
-- **Year:** 2023 (annual summary)
-- **Records:** ~3,278 counties across all US states and territories
-- **No API key required** — CMS data is publicly accessible with CORS enabled
+County data loads on startup; ZIP code (ZCTA) data loads on demand when a county is selected. Enrollment rate (enrollees ÷ total population) is computed client-side and used to color the map. Data is cached for 10 minutes via TanStack Query.
 
-### What the data includes
+## Stack
 
-Each county record contains:
-
-| Field | Description |
-|-------|-------------|
-| `TOT_BENES` | Total Medicare beneficiaries |
-| `ORGNL_MDCR_BENES` | Beneficiaries enrolled in Original Medicare |
-| `MA_AND_OTH_BENES` | Beneficiaries enrolled in Medicare Advantage |
-| `AGE_*_BENES` | Enrollment broken down by age bracket (Under 25, 25-44, 45-64, 65-69, 70-74, 75-79, 80-84, 85-89, 90-94, 95+) |
-
-CMS suppresses values below 11 enrollees (displayed as `*`) to protect beneficiary privacy. These counties appear as "Data Suppressed" in the app.
-
-### How data is fetched
-
-1. On page load, the app requests all county-level records for 2023 from the CMS API
-2. The API returns a maximum of 1,000 records per page, so the app fetches 4 pages in parallel (~3,278 total records)
-3. When a state filter is applied, only that state's counties are fetched (typically a single page)
-4. Age bracket and plan type filters are applied client-side — no additional API calls needed
-5. Data is cached for 10 minutes using TanStack Query to avoid redundant requests
-
-### Geographic boundaries
-
-County boundaries come from the [us-atlas](https://github.com/topojson/us-atlas) npm package, which provides US Census Bureau TIGER/Line county geometries as TopoJSON (~89KB). Counties are matched to CMS enrollment data by their 5-digit FIPS code.
-
-## Local Development
-
-```bash
-npm install
-npm run dev
-```
-
-Requires a Mapbox access token and a Census API key in `.env.local`:
-
-```
-VITE_MAPBOX_TOKEN=your_mapbox_token_here
-VITE_CENSUS_API_KEY=your_census_api_key_here
-```
-
-Get a free Mapbox token at [mapbox.com](https://account.mapbox.com/access-tokens/) and a free Census API key at [api.census.gov/data/key_signup.html](https://api.census.gov/data/key_signup.html) (the Census ACS API returns a `302` with no data for unauthenticated requests).
-
-## Deployment
-
-The app deploys to GitHub Pages via the included GitHub Actions workflow. Both `VITE_MAPBOX_TOKEN` and `VITE_CENSUS_API_KEY` must be added as repository secrets under **Settings > Secrets and variables > Actions**.
+React · TypeScript · Mapbox GL · Tailwind CSS · Census ACS API
